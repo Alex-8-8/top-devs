@@ -20,7 +20,7 @@
         <router-link
           v-for="(user, i) of users"
           :key="user.id.value"
-          :to="`/user/${i}`"
+          :to="`/top-devs/user/${i}`"
         >
           <v-list-item>
 

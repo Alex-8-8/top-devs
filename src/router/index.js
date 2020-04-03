@@ -6,8 +6,7 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/user/:id',
-    name: 'home',
+    path: '/top-devs/user/:id',
     component: Content,
   }
 ]
