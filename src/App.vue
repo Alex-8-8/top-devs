@@ -1,32 +1,90 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+  <v-app id="inspire">
+    <v-navigation-drawer
+      v-model="drawer"
+      app
+    >
+    <div class="my-4 d-flex">
+        <v-btn 
+          class="mx-auto"
+          color="success"
+          @click="loadUsers" 
+          normal
+          :disabled="users.length > 0"
+        >
+          Load Users
+        </v-btn>
     </div>
-    <router-view/>
-  </div>
+      <v-list dense>
+
+        <router-link
+          v-for="(user, i) of users"
+          :key="user.id.value"
+          :to="`/user/${i}`"
+        >
+          <v-list-item>
+
+            <v-list-item-content>
+              <v-btn color="indigo" dark>
+                <v-icon left>mdi-account-box</v-icon>
+                <v-list-item-title>{{user.name.first}} {{user.name.last}}</v-list-item-title>
+              </v-btn>
+            </v-list-item-content>
+          </v-list-item>
+        </router-link>
+        
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-app-bar
+      app
+      color="indigo"
+      dark
+    >
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-toolbar-title>Application</v-toolbar-title>
+    </v-app-bar>
+    <router-view></router-view>
+    <v-footer
+      color="indigo"
+      app
+    >
+      <span class="white--text">&copy; 2019</span>
+    </v-footer>
+  </v-app>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+<script>
+  export default {
+    props: {
+      source: String,
+    },
+    data: () => ({
+      drawer: null,
+      resource: null
+    }),
+    computed:  {
+      users () {
+        return this.$store.state.users
+      }
+    },
+    methods: {
+      async loadUsers () {
+        const response = await this.resource.get()
+        const data = await response.json()
+        console.log(data.results)
+        return this.$store.state.users = data.results
+         
+      }
+    },
+    created () {
+      this.resource = this.$resource('https://randomuser.me/api/?results=20')
     }
   }
-}
-</style>
+</script>
+
+<style scoped>
+  a {
+   text-decoration: none;
+  }
+</style>>
