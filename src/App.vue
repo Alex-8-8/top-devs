@@ -46,19 +46,16 @@
     </v-app-bar>
     <router-view></router-view>
     <v-footer
-      color="indigo"
+      color="indigo d-flex"
       app
     >
-      <span class="white--text">&copy; 2019</span>
+      <span class="white--text mx-auto">&copy; 2019</span>
     </v-footer>
   </v-app>
 </template>
 
 <script>
   export default {
-    props: {
-      source: String,
-    },
     data: () => ({
       drawer: null,
       resource: null
@@ -70,15 +67,8 @@
     },
     methods: {
       async loadUsers () {
-        const response = await this.resource.get()
-        const data = await response.json()
-        console.log(data.results)
-        return this.$store.state.users = data.results
-         
-      }
-    },
-    created () {
-      this.resource = this.$resource('https://randomuser.me/api/?results=20')
+        await this.$store.dispatch('loadUsers')
+       }
     }
   }
 </script>

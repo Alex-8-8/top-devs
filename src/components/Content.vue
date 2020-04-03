@@ -66,11 +66,6 @@ export default {
             return this.$store.state.users.find((_, i) => i === Number(this.$route.params.id));
         }
     },
-    methods: {
-      click () {
-        console.log(this.$store.getters.user)
-      }
-    }
 }
 </script>
 
